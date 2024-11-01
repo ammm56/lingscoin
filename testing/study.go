@@ -8,6 +8,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"os"
 	"runtime"
 
@@ -48,6 +49,24 @@ func operatingSystem() string {
 	}
 
 	return runtime.GOOS
+}
+
+// 结构体定义
+type PointXY struct {
+	X float64
+	Y float64
+}
+
+// 结构体方法
+func (p PointXY) Abs() float64 {
+	return math.Sqrt(p.X*p.X + p.Y*p.Y)
+}
+
+// 结构体指针
+func (p *PointXY) Add(n float64) {
+	p.X += n
+	p.Y += n
+	fmt.Println("Add结构体实例p.X: ", p.X, " p.Y: ", p.Y)
 }
 
 // 测试函数
@@ -98,6 +117,47 @@ func test1() {
 	default:
 		fmt.Println("Other OS")
 	}
+	// 数组
+	var lista = []int{1, 2, 3, 4, 5}
+	for i, v := range lista {
+		fmt.Printf("索引: %d, 平方值: %d \n", i, v*v)
+	}
+	var listb = lista[1:4]
+	fmt.Println("listb: ", listb)
+
+	dira := make(map[string]string)
+	dira["a"] = "apple"
+	dira["b"] = "banana"
+	delete(dira, "a")
+	item, ok := dira["b"]
+	if !ok {
+		fmt.Println("b 不存在")
+	} else {
+		fmt.Println("b 存在", item)
+	}
+	// 集合
+	listc := map[string]PointXY{
+		"Google": {37.42202, -122.08408},
+		"Apple":  {37.77493, -122.41942},
+	}
+	for key, value := range listc {
+		fmt.Printf("k %s: v %v\n", key, value)
+	}
+
+	// 创建结构体实例
+	p := PointXY{3, 4}
+	// 调用结构体方法
+	pvalue := p.Abs()
+	fmt.Println("结构体方法调用: ", pvalue)
+	defer p.Add(10)
+	fmt.Println("结构体实例p.X: ", p.X, " p.Y: ", p.Y)
+	// defer 延迟调用
+	defer func() {
+		p.Add(2)
+	}()
+
+	fmt.Println("END")
+
 }
 
 func test2_btcutil() {
@@ -188,6 +248,6 @@ func test2_btcutil() {
 func main() {
 	test1()
 
-	test2_btcutil()
+	// test2_btcutil()
 
 }
